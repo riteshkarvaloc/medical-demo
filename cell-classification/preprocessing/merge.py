@@ -22,13 +22,13 @@ def open_rgby(path,id):
     img = cv2.resize(img, (512, 512))
     return img
 
-if not os.path.exists(OUT_PATH + 'HPIA/Nucleoplasm_Cytosol'):
-    os.makedirs(OUT_PATH + 'HPIA/Nucleoplasm_Cytosol')
+if not os.path.exists(OUT_IMG_PATH):
+    os.makedirs(OUT_IMG_PATH)
 j=0
 ids = np.append(annot[annot['Target']=='0'].Id.values, annot[annot['Target']=='25'].Id.values)
 
 for each_id in ids:
-    temp_img = open_rgby(IMG_PATH, each_id)
+    temp_img = open_rgby(IN_IMG_PATH, each_id)
     cv2.imwrite(OUT_IMG_PATH + each_id + '.png', temp_img)
     j += 1
     if j%100==0:
