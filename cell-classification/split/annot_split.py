@@ -137,8 +137,8 @@ if __name__== "__main__":
     OUT_DIR = args.outdir
     TRAIN_DATA = OUT_DIR + 'train/'
     TEST_DATA = OUT_DIR + 'test/'
-    annot = pd.read_csv(DATA_DIR + 'train.csv')
-    imgfolder = DATA_DIR + '/Nucleoplasm_Cytosol/'
+    annot = pd.read_csv(DATA_DIR + 'HPIA/train.csv')
+    imgfolder = DATA_DIR + 'HPIA/Nucleoplasm_Cytosol/'
     img_names = os.listdir(imgfolder)
     shuffle(img_names)
     n_samples = len(img_names)
