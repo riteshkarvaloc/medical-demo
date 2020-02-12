@@ -33,7 +33,7 @@ def build_annot(path, image_file, annot):
             else:
                 y_min.append(0)
             y_max.append(y + h + 20)
-            my_images.append(path + image_file)
+            my_images.append('Nucleoplasm_Cytosol/' + image_file)
             my_classes.append(str(np.where(image_file in annot[annot['Target']=='0'].Id.values + '.png', 
                                            'Nucleoplasm', 'Cytosol')))
     
@@ -42,12 +42,13 @@ def build_annot(path, image_file, annot):
                              'Class': my_classes})
     return annot_df
 
+
 def annot_images(chunks, outdir, annot):
     annot_df = pd.DataFrame()
     j=0
     merged_imgs = os.listdir(outdir + 'Nucleoplasm_Cytosol/')
     for each_img in merged_imgs:
-        annot_df = pd.concat([annot_df, build_annot('Nucleoplasm_Cytosol/', each_img, annot)], 
+        annot_df = pd.concat([annot_df, build_annot(outdir + 'Nucleoplasm_Cytosol/', each_img, annot)], 
                             ignore_index=True)
     annot_df = annot_df.astype({'xmin': 'int32',
                                 'xmax': 'int32',
