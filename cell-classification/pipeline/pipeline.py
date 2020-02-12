@@ -29,8 +29,8 @@ def d3pipeline(
     cellular_split_script="python split.py --datatype cellular",
     cellular_split_datasets=json.dumps(["cellular-preprocessed"]),
     cellular_split_input_mounts=json.dumps(["/opt/dkube/input"]),
-    cellular_split_outputs=json.dumps(["cellular-train", "cellular-test", "cellular-val"]),
-    cellular_split_output_mounts=json.dumps(["/opt/dkube/outputs/train", "/opt/dkube/outputs/test", "/opt/dkube/outputs/val"]),
+    cellular_split_outputs=json.dumps(["cellular-train", "cellular-test"]),
+    cellular_split_output_mounts=json.dumps(["/opt/dkube/outputs/train", "/opt/dkube/outputs/test"]),
     
     #Training
     #In notebook DKUBE_USER_ACCESS_TOKEN is automatically picked up from env variable
