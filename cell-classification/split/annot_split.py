@@ -33,7 +33,7 @@ def build_annot(path, image_file, annot):
             else:
                 y_min.append(0)
             y_max.append(y + h + 20)
-            my_images.append('Nucleoplasm_Cytosol/' + image_file)
+            my_images.append('/opt/dkube/input/' + 'Nucleoplasm_Cytosol/' + image_file)
             my_classes.append(str(np.where(image_file in annot[annot['Target']=='0'].Id.values + '.png', 
                                            'Nucleoplasm', 'Cytosol')))
     
