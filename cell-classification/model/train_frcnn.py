@@ -40,7 +40,7 @@ parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal
 parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
 parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
                   action="store_true", default=False)
-parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=2000)
+parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=5)
 parser.add_option("--config_filename", dest="config_filename", help=
                 "Location to store all the metadata related to the training (to be used when testing).",
                 default="config.pickle")
@@ -48,6 +48,13 @@ parser.add_option("--output_weight_path", dest="output_weight_path", help="Outpu
 parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights. If not specified, will try to load default weights provided by keras.")
 
 (options, args) = parser.parse_args()
+
+
+modeldir = '/opt/dkube/output/model/'
+all_export_path = modeldir + 'all_model/'
+rpn_export_path = modeldir + 'rpn_model/'
+clf_export_path = modeldir + 'clf_model/'
+log_path = modeldir + 'logs/'
 
 if not options.train_path:   # if filename is not given
     parser.error('Error: path to training data must be specified. Pass --path to command line')
@@ -79,11 +86,7 @@ else:
     print('Not a valid model')
     raise ValueError
 
-modeldir = '/home/dkube/work/workspace/model/'
-all_export_path = modeldir + 'all_model/'
-rpn_export_path = modeldir + 'rpn_model/'
-clf_export_path = modeldir + 'clf_model/'
-log_path = modeldir + 'logs/'
+
 
 if not tf.io.gfile.exists(modeldir):
     tf.io.gfile.makedirs(modeldir)
@@ -150,7 +153,7 @@ model_classifier = Model([img_input, roi_input], classifier)
 # this is a model that holds both the RPN and the classifier, used to load/save weights for the models
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
 
-weights_url = "https://github.com/fchollet/deep-learning-models/releases/download/v0.1/resnet50_weights_tf_dim_ordering_tf_kernels.h5"
+weights_url = "https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels.h5"
 if C.base_net_weights not in os.listdir(os.getcwd()):
     print('Could not find pretrained model weights.')
     get_file(C.base_net_weights, weights_url, cache_subdir=os.getcwd())
