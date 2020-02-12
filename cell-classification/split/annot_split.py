@@ -110,14 +110,14 @@ def save_imgs(img_chunks, imgfolder, outputdir, annot):
     if not os.path.exists(outputdir[0] + 'Nucleoplasm_Cytosol'):
         os.makedirs(outputdir[0] + 'Nucleoplasm_Cytosol')
     for f in img_chunks[0]:
-        shutil.copyfile(imgfolder + f, outputdir[0] + 'Nucleoplasm_Cytosol')
+        shutil.copyfile(imgfolder + f, outputdir[0] + 'Nucleoplasm_Cytosol/' + f)
     annot_images(chunks[0], outputdir[0], annot)
     print("Train Data Created")
 
     if not os.path.exists(outputdir[1] + 'Nucleoplasm_Cytosol'):
         os.makedirs(outputdir[1] + 'Nucleoplasm_Cytosol')
     for f in img_chunks[1]:
-        shutil.copyfile(imgfolder + f , outputdir[1] + 'Nucleoplasm_Cytosol')
+        shutil.copyfile(imgfolder + f , outputdir[1] + 'Nucleoplasm_Cytosol/' + f)
     annot_images(chunks[1], outputdir[1], annot)
     print("Test Data Created")
 
