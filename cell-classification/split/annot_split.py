@@ -130,7 +130,7 @@ if __name__== "__main__":
     parser.add_argument("-s", "--seed",dest="seed", type=int,default=13,
                         help="a seed value for random generator,"
                              " helps in regenerating the split",)
-    parser.add_argument("-o","--outputdir", default='/opt/dkube/outputs/', dest = 'outdir', help="output folder path")
+    parser.add_argument("-o","--outputdir", default='/opt/dkube/output/', dest = 'outdir', help="output folder path")
     args = parser.parse_args()
 
     DATA_DIR = "/opt/dkube/input/"
