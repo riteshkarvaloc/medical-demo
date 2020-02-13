@@ -1,16 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-tensorflow_model_server --model_base_path=/home/ritesh/Dkube-Demos/model/rpn_model --rest_api_port=9000 --model_name=rpn
-
-tensorflow_model_server --model_base_path=/home/ritesh/Dkube-Demos/model/clf_model --rest_api_port=9001 --model_name=clf
-# In[1]:
-
-
 import warnings
 warnings.filterwarnings("ignore")
-
-
-# In[2]:
 
 
 import json
@@ -21,9 +10,6 @@ import pandas as pd
 import cv2
 import pickle
 from keras_frcnn import roi_helpers
-
-
-# In[46]:
 
 
 def format_img_size(img):
@@ -68,58 +54,29 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
     return (real_x1, real_y1, real_x2 ,real_y2)
 
 
-# In[4]:
-
 
 config_output_filename = 'model/config.pickle'
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
 
-# In[5]:
-
-
-r = requests.get('http://localhost:9000/v1/models/rpn/metadata')
-res = dict(json.loads(r.content.decode('utf-8')))
-
-
-# In[6]:
+# r = requests.get('http://localhost:9000/v1/models/rpn/metadata')
+# res = dict(json.loads(r.content.decode('utf-8')))
 
 
 im_size = 600
 img_channel_mean = [103.939, 116.779, 123.68]
 img_scaling_factor = 1.0
 
-
-# In[7]:
-
-
 res['metadata']['signature_def']['signature_def']['serving_default']['inputs']
-
-
-# In[23]:
-
 
 import cv2
 im_path = '/home/ritesh/Dkube-Demos/test/Nucleoplasm_Cytosol/0cfbad10-bbb7-11e8-b2ba-ac1f6b6435d0.png'
 img = cv2.imread(im_path)
 
-
-# In[24]:
-
-
 X, ratio = format_img(img)
 
 X = np.transpose(X, (0, 2, 3, 1))
-
-
-# In[25]:
-
-
-X.shape
-
-
-# In[26]:
 
 
 payload = {
@@ -127,62 +84,20 @@ payload = {
 }
 r = requests.post('http://localhost:9000/v1/models/rpn:predict', json=payload)
 
-
-# In[27]:
-
-
-r
-
-
-# In[28]:
-
-
 pred = json.loads(r.content.decode('utf-8'))
-
-
-# In[29]:
-
-
-pred['outputs'].keys()
-
-
-# In[30]:
-
 
 Y1 = np.asarray(pred['outputs']['rpn_out_class_1/Sigmoid:0'])
 Y2 = np.asarray(pred['outputs']['rpn_out_regress_1/BiasAdd:0'])
 F = np.asarray(pred['outputs']['activation_88/Relu:0'])
 
-
-# In[31]:
-
-
-Y1.shape, Y2.shape, F.shape
-
-
-# In[32]:
-
-
-r = requests.get('http://localhost:9001/v1/models/clf/metadata')
-res = dict(json.loads(r.content.decode('utf-8')))
-
-
-# In[33]:
-
+# r = requests.get('http://localhost:9001/v1/models/clf/metadata')
+# res = dict(json.loads(r.content.decode('utf-8')))
 
 res['metadata']['signature_def']['signature_def']['serving_default']['inputs']
-
-
-# In[34]:
-
 
 R = roi_helpers.rpn_to_roi(Y1, Y2, C, overlap_thresh=0.7)
 R[:, 2] -= R[:, 0]
 R[:, 3] -= R[:, 1]
-
-
-# In[55]:
-
 
 bboxes = {}
 probs = {}
@@ -192,10 +107,6 @@ bbox_threshold = 0.5
 visualise = True
 class_mapping = {0: 'Nucleoplasm',1: 'Cytosol',2: 'bg'}
 class_to_color = {class_mapping[v]: np.random.randint(0, 255, 3) for v in class_mapping}
-
-
-# In[56]:
-
 
 for jk in range(R.shape[0]//C.num_rois + 1):
     ROIs = np.expand_dims(R[C.num_rois*jk:C.num_rois*(jk+1), :], axis=0)
@@ -264,16 +175,5 @@ for key in bboxes:
 cv2.imwrite('reslult.png',img)
     
 
-
-# In[57]:
-
-
-import matplotlib.pyplot as plt
-plt.imshow(img)
-
-
-# In[ ]:
-
-
-
-
+# import matplotlib.pyplot as plt
+# plt.imshow(img)
