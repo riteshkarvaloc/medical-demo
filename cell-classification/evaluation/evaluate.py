@@ -82,7 +82,7 @@ if not options.test_path:   # if filename is not given
 
 data_path = '/opt/dkube/input/'
 
-model_path ='/opt/dkube/model/'
+model_path ='/opt/dkube/model/model/'
 
 config_output_filename = model_path + options.config_filename
 
