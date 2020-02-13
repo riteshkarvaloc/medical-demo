@@ -173,7 +173,7 @@ print(model_rpn.inputs, model_rpn.outputs)
 print(model_classifier.inputs, model_classifier.outputs)
 
 
-epoch_length = 10 #len(train_imgs)
+epoch_length = len(train_imgs)
 num_epochs = int(options.num_epochs)
 iter_num = 0
 
