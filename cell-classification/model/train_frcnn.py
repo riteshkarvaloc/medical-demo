@@ -5,7 +5,7 @@ import time
 import numpy as np
 from optparse import OptionParser
 import pickle
-import os
+import os, json
 
 import tensorflow as tf
 from tensorflow.keras import backend as K
@@ -51,6 +51,7 @@ parser.add_option("--input_weight_path", dest="input_weight_path", help="Input p
 
 
 modeldir = '/opt/dkube/output/model/'
+metric_path = '/opt/dkube/output/metric/'
 all_export_path = modeldir + 'all_model/'
 rpn_export_path = modeldir + 'rpn_model/'
 clf_export_path = modeldir + 'clf_model/'
@@ -173,7 +174,7 @@ print(model_rpn.inputs, model_rpn.outputs)
 print(model_classifier.inputs, model_classifier.outputs)
 
 
-epoch_length = len(train_imgs)
+epoch_length = 10 #len(train_imgs)
 num_epochs = int(options.num_epochs)
 iter_num = 0
 
@@ -201,7 +202,7 @@ for epoch_num in range(num_epochs):
                     'loss_class_regr', 'class_acc', 'mean_overlapping_bboxes']
     progbar = generic_utils.Progbar(epoch_length)
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
-
+    train_metrics = []
     while True:
         try:
 
@@ -288,7 +289,6 @@ for epoch_num in range(num_epochs):
                 logs = [loss_rpn_cls, loss_rpn_regr, loss_class_cls, loss_class_regr,
                        class_acc, mean_overlapping_bboxes]
                 write_log(callback, metric_names, logs, epoch_num)
-                
                 if C.verbose:
                     print('Mean number of bounding boxes from RPN overlapping ground truth boxes: {}'.format(mean_overlapping_bboxes))
                     print('Classifier accuracy for bounding boxes from RPN: {}'.format(class_acc))
@@ -301,11 +301,32 @@ for epoch_num in range(num_epochs):
                 curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
                 iter_num = 0
                 start_time = time.time()
+                if epoch_num == num_epochs - 1:
+                    train_metrics.append(logs)
+                    train_metrics = np.asarray(train_metrics)
                 break
 
         except Exception as e:
             print('Exception 3: {}'.format(e))
             break
+
+################# Saving Metrics ###########################
+metrics = []
+
+metric_names = ['loss_rpn_cls', 'loss_rpn_regr', 'loss_class_cls', 'loss_class_regr',
+                       'class_acc', 'mean_overlapping_bboxes']
+if not tf.io.gfile.exists(metric_path):
+    tf.io.gfile.makedirs(metric_path)
+for i in range(6):
+    temp = {}
+    temp['class'] = 'scalar'
+    temp['name'] = metric_names[i]
+    temp['value'] = train_metrics[i]
+    metrics.append(temp)
+metrics = {'metrics':metrics}
+with open(metric_path + 'metrics.json', 'w') as outfile:
+    json.dump(metrics, outfile, indent=4)
+
 
 ############### Saving Model ###############################
 model_all.save(modeldir + 'weights.h5')
