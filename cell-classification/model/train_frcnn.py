@@ -17,6 +17,7 @@ from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils, get_file
 from tensorflow.keras.callbacks import TensorBoard
+from dkube import dkubeLoggerHook as logger_hook
 
 sys.setrecursionlimit(40000)
 
@@ -202,7 +203,6 @@ for epoch_num in range(num_epochs):
                     'loss_class_regr', 'class_acc', 'mean_overlapping_bboxes']
     progbar = generic_utils.Progbar(epoch_length)
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
-    train_metrics = []
     while True:
         try:
 
@@ -302,7 +302,7 @@ for epoch_num in range(num_epochs):
                 iter_num = 0
                 start_time = time.time()
                 if epoch_num == num_epochs - 1:
-                    train_metrics.append(logs)
+                    train_metrics = logs
                     train_metrics = np.asarray(train_metrics)
                 break
 
