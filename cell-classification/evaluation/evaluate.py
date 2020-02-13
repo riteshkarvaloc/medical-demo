@@ -139,7 +139,7 @@ classifier = nn.classifier(shared_layers, roi_input, C.num_rois, nb_classes=len(
 model_rpn = Model(img_input, rpn[:2])
 model_classifier = Model([img_input, roi_input], classifier)
 
-C.model_path = model_path + 'model/weights.h5'
+C.model_path = model_path + 'weights.h5'
 
 
 print('Loading weights from {}'.format(C.model_path))
