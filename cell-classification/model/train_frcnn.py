@@ -324,9 +324,9 @@ for i in range(6):
     temp['value'] = train_metrics[i]
     metrics.append(temp)
 metrics = {'metrics':metrics}
+print()
 with open(metric_path + 'metrics.json', 'w') as outfile:
     json.dump(metrics, outfile, indent=4)
-
 
 ############### Saving Model ###############################
 model_all.save(modeldir + 'weights.h5')
