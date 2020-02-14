@@ -1,6 +1,6 @@
 name: dkube-evaluation
 description: |
-    Component which can be used to do training for deep learning models on Dkube platform.
+    Component which can be used to doevaluation of trained deep learning models on Dkube platform.
     Dkube training offers,
     * Advanced options for distributed training, gpu managment & pooling.
     * Support Hyper parameter tuning.

@@ -1,6 +1,6 @@
 name: dkube-split
 description: |
-    Component which can be used to perform data preprocessing on Dkube platform.
+    Component which can be used to perform data split on Dkube platform.
     Dkube preprocess provides,
     * Ability to orchestrate and run custom containers.
     * Renders utilization graphs for CPU, Memory.

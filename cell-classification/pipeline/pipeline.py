@@ -7,7 +7,7 @@ import json
 from random import randint
 
 dkube_preprocess_op         = components.load_component_from_file("../components/preprocess/component.yaml")
-dkube_split_op         = components.load_component_from_file("../components/split/component.yaml")
+dkube_split_op              = components.load_component_from_file("../components/split/component.yaml")
 dkube_training_op           = components.load_component_from_file("../components/training/component.yaml")
 dkube_evaluation_op         = components.load_component_from_file("../components/evaluation/component.yaml")
 dkube_serving_op            = components.load_component_from_file("../components/serving/component.yaml")
@@ -72,7 +72,7 @@ def d3pipeline(
                                       input_dataset_mounts=cellular_preprocess_input_mounts, output_mounts=cellular_preprocess_output_mounts)
 
 
-    cellular_split  = dkube_preprocess_op(auth_token, training_container,
+    cellular_split  = dkube_split_op(auth_token, training_container,
                                       program=training_program, run_script=cellular_split_script,
                                       datasets=cellular_split_datasets, outputs=cellular_split_outputs,
                                       input_dataset_mounts=cellular_split_input_mounts,
@@ -87,7 +87,7 @@ def d3pipeline(
                                     ngpus=training_gpus,
                                     envs=training_envs).after(cellular_split)
                                     
-    evaluate    = dkube_training_op(auth_token, training_container,
+    evaluate    = dkube_evaluation_op(auth_token, training_container,
                                     program=training_program, run_script=evaluation_script,
                                     datasets=evaluation_datasets,
                                     input_dataset_mounts=evaluation_input_dataset_mounts,
