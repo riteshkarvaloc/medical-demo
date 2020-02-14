@@ -7,7 +7,9 @@ import json
 from random import randint
 
 dkube_preprocess_op         = components.load_component_from_file("../components/preprocess/component.yaml")
+dkube_split_op         = components.load_component_from_file("../components/split/component.yaml")
 dkube_training_op           = components.load_component_from_file("../components/training/component.yaml")
+dkube_evaluation_op         = components.load_component_from_file("../components/evaluation/component.yaml")
 dkube_serving_op            = components.load_component_from_file("../components/serving/component.yaml")
 dkube_viewer_op             = components.load_component_from_file('../components/viewer/component.yaml')
 
