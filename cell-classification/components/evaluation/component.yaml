@@ -60,7 +60,7 @@ outputs:
   - {name: artifact,        description: 'Identifier in Dkube storage where artifacts of training are stored.'}
 implementation:
   container:
-    image: ocdr/dkubepl:1.5.4
+    image: ocdr/dkubepl:1.5.5
     command: ['dkubepl']
     args: [
       training,
