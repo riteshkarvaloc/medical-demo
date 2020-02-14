@@ -6,6 +6,7 @@ import sys
 import pickle
 from optparse import OptionParser
 import time
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 from keras_frcnn import config
 from tensorflow.keras.optimizers import Adam, SGD, RMSprop
@@ -16,7 +17,7 @@ from keras_frcnn import data_generators
 from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
 from keras_frcnn.simple_parser import get_data
-from keras.utils import generic_utils
+# from keras.utils import generic_utils
 
 def format_img_size(img, C):
     """ formats the image size based on config """
@@ -110,7 +111,7 @@ if 'bg' not in classes_count:
     
 test_imgs = [s for s in all_imgs if s['imageset'] == 'trainval' or s['imageset'] == 'test']
 
-print('Num train samples {}'.format(len(test_imgs)))
+print('Num test samples {}'.format(len(test_imgs)))
 
 data_gen_test = data_generators.get_anchor_gt(test_imgs, classes_count, C, nn.get_img_output_length, mode='val')
 
@@ -159,7 +160,7 @@ rpn_accuracy_for_epoch = []
 iter_num = 0
 metric_names = ['loss_rpn_cls','loss_rpn_regr', 'loss_class_cls',
                 'loss_class_regr', 'class_acc', 'mean_overlapping_bboxes']
-progbar = generic_utils.Progbar(len(test_imgs))
+# progbar = generic_utils.Progbar(len(test_imgs))
 print('Evaluating {} samples'.format(len(test_imgs)))
 
 while True:
@@ -221,8 +222,8 @@ while True:
     losses[iter_num, 3] = loss_class[2]
     losses[iter_num, 4] = loss_class[3]
 
-    progbar.update(iter_num+1, [('rpn_cls', losses[iter_num, 0]), ('rpn_regr', losses[iter_num, 1]),
-                                ('detector_cls', losses[iter_num, 2]), ('detector_regr', losses[iter_num, 3])])
+    # progbar.update(iter_num+1, [('rpn_cls', losses[iter_num, 0]), ('rpn_regr', losses[iter_num, 1]),
+    #                             ('detector_cls', losses[iter_num, 2]), ('detector_regr', losses[iter_num, 3])])
 
     iter_num += 1
     
