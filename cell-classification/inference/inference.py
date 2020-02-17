@@ -68,10 +68,10 @@ im_size = 600
 img_channel_mean = [103.939, 116.779, 123.68]
 img_scaling_factor = 1.0
 
-res['metadata']['signature_def']['signature_def']['serving_default']['inputs']
+# res['metadata']['signature_def']['signature_def']['serving_default']['inputs']
 
 import cv2
-im_path = '/home/ritesh/Dkube-Demos/test/Nucleoplasm_Cytosol/0cfbad10-bbb7-11e8-b2ba-ac1f6b6435d0.png'
+im_path = 'data/test.png'
 img = cv2.imread(im_path)
 
 X, ratio = format_img(img)
@@ -173,7 +173,3 @@ for key in bboxes:
         cv2.rectangle(img, (textOrg[0] - 5,textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (255, 255, 255), -1)
         cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 cv2.imwrite('reslult.png',img)
-    
-
-# import matplotlib.pyplot as plt
-# plt.imshow(img)
