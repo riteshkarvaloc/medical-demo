@@ -45,7 +45,7 @@ def d3pipeline(
     #Script to run inside the training container    
     training_script="python cell-classification/model/train_frcnn.py -o simple -p /opt/dkube/input/annot.txt --hf --vf --rot --num_epochs 1",
     #Input datasets for training. Update accordingly if different name is used while creating dataset in dkube.    
-    training_datasets=json.dumps(["train"]),
+    training_datasets=json.dumps(["callular-train"]),
     training_input_dataset_mounts=json.dumps(["/opt/dkube/input/"]),
     training_outputs=json.dumps(["faster-rcnn"]),
     training_output_mounts=json.dumps(["/opt/dkube/output"]),
@@ -56,7 +56,7 @@ def d3pipeline(
     
     #Evaluation
     evaluation_script="python cell-classification/model/evaluate.py --path /opt/dkube/input/annot.txt",
-    evaluation_datasets=json.dumps(["test"]),
+    evaluation_datasets=json.dumps(["cellular-test"]),
     evaluation_input_dataset_mounts=json.dumps(["/opt/dkube/inputs/"]),
     evaluation_models=json.dumps(["faster-rcnn"]),
     evaluation_input_model_mounts=json.dumps(["/opt/dkube/model"]),
