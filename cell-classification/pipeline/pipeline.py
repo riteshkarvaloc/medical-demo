@@ -57,7 +57,7 @@ def d3pipeline(
     #Evaluation
     evaluation_script="python cell-classification/model/evaluate.py --path /opt/dkube/input/annot.txt",
     evaluation_datasets=json.dumps(["cellular-test"]),
-    evaluation_input_dataset_mounts=json.dumps(["/opt/dkube/inputs/"]),
+    evaluation_input_dataset_mounts=json.dumps(["/opt/dkube/input/"]),
     evaluation_models=json.dumps(["faster-rcnn"]),
     evaluation_input_model_mounts=json.dumps(["/opt/dkube/model"]),
     
