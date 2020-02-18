@@ -197,12 +197,15 @@ callback = TensorBoard(log_path)
 callback.set_model(model_all)
 # print(model_all.inputs)
 # print(model_all.outputs)
+train_metrics = []
 
 for epoch_num in range(num_epochs):
     metric_names = ['loss_rpn_cls','loss_rpn_regr', 'loss_class_cls',
                     'loss_class_regr', 'class_acc', 'mean_overlapping_bboxes']
     progbar = generic_utils.Progbar(epoch_length)
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
+    train_metrics = []
+    train_logs = []
     while True:
         try:
 
@@ -288,6 +291,7 @@ for epoch_num in range(num_epochs):
                 rpn_accuracy_for_epoch = []
                 logs = [loss_rpn_cls, loss_rpn_regr, loss_class_cls, loss_class_regr,
                        class_acc, mean_overlapping_bboxes]
+                train_logs = logs
                 write_log(callback, metric_names, logs, epoch_num)
                 if C.verbose:
                     print('Mean number of bounding boxes from RPN overlapping ground truth boxes: {}'.format(mean_overlapping_bboxes))
@@ -301,18 +305,17 @@ for epoch_num in range(num_epochs):
                 curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
                 iter_num = 0
                 start_time = time.time()
-                if epoch_num == num_epochs - 1:
-                    train_metrics = logs
-                    train_metrics = np.asarray(train_metrics)
                 break
 
         except Exception as e:
             print('Exception 3: {}'.format(e))
             break
+    train_metrics = train_logs
+    train_metrics = np.asarray(train_metrics)
 
 ################# Saving Metrics ###########################
 metrics = []
-
+print("saving metrics")
 metric_names = ['loss_rpn_cls', 'loss_rpn_regr', 'loss_class_cls', 'loss_class_regr',
                        'class_acc', 'mean_overlapping_bboxes']
 if not tf.io.gfile.exists(metric_path):
@@ -324,7 +327,7 @@ for i in range(6):
     temp['value'] = train_metrics[i]
     metrics.append(temp)
 metrics = {'metrics':metrics}
-print()
+print('metrics', metrics)
 with open(metric_path + 'metrics.json', 'w') as outfile:
     json.dump(metrics, outfile, indent=4)
 
