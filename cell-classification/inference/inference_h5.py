@@ -14,7 +14,6 @@ from tensorflow.keras.models import Model
 from keras_frcnn import roi_helpers
 
 sys.setrecursionlimit(40000)
-
 parser = OptionParser()
 
 parser.add_option("-p", "--path", dest="test_path", help="Path to test data.")
@@ -32,6 +31,7 @@ if not options.test_path:   # if filename is not given
 
 
 modeldir = '/home/ritesh/Dkube-Demos/model/'
+export_path = '/home/ritesh/results_img'
 
 config_output_filename = modeldir + 'config.pickle'
 
@@ -132,7 +132,6 @@ model_classifier_only = Model([feature_map_input, roi_input], classifier)
 model_classifier = Model([feature_map_input, roi_input], classifier)
 
 C.model_path = modeldir  + 'weights.h5'
-export_path = '/home/ritesh/results_img'
 
 if not tf.io.gfile.exists(export_path):
     tf.io.gfile.makedirs(export_path)
