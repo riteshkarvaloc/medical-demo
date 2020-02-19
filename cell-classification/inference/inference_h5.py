@@ -31,7 +31,9 @@ if not options.test_path:   # if filename is not given
     parser.error('Error: path to test data must be specified. Pass --path to command line')
 
 
-config_output_filename = options.config_filename
+modeldir = '/home/ritesh/Dkube-Demos/model/'
+
+config_output_filename = modeldir + 'config.pickle'
 
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
@@ -98,7 +100,6 @@ if 'bg' not in class_mapping:
     class_mapping['bg'] = len(class_mapping)
 
 class_mapping = {v: k for k, v in class_mapping.items()}
-print(class_mapping)
 class_to_color = {class_mapping[v]: np.random.randint(0, 255, 3) for v in class_mapping}
 C.num_rois = int(options.num_rois)
 
@@ -130,7 +131,7 @@ model_classifier_only = Model([feature_map_input, roi_input], classifier)
 
 model_classifier = Model([feature_map_input, roi_input], classifier)
 
-C.model_path = '/home/ritesh/Dkube-Demos/model/weights.h5'
+C.model_path = modeldir  + 'weights.h5'
 export_path = '/home/ritesh/results_img'
 
 if not tf.io.gfile.exists(export_path):
@@ -239,4 +240,4 @@ for key in bboxes:
 #     print(all_dets)
 #     cv2.imshow('img', img)
 #     cv2.waitKey(0)
-cv2.imwrite(export_path + '/{}.png'.format(idx),img)
+cv2.imwrite(export_path + '/{}.png'.format(1),img)
