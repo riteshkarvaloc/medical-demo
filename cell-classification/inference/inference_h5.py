@@ -148,7 +148,7 @@ all_imgs = []
 
 classes = {}
 
-bbox_threshold = 0.7
+bbox_threshold = 0.5
 
 visualise = True
 
@@ -194,7 +194,7 @@ for jk in range(R.shape[0]//C.num_rois + 1):
             continue
 
         cls_name = class_mapping[np.argmax(P_cls[0, ii, :])]
-        print(cls_name)
+        # print(cls_name)
         if cls_name not in bboxes:
             bboxes[cls_name] = []
             probs[cls_name] = []
