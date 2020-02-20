@@ -52,7 +52,7 @@ parser.add_option("--input_weight_path", dest="input_weight_path", help="Input p
 
 
 modeldir = '/opt/dkube/output/model/'
-metric_path = '/opt/dkube/output/metric/'
+metric_path = '/opt/dkube/output/metrics/'
 all_export_path = modeldir + 'all_model/'
 rpn_export_path = modeldir + 'rpn_model/'
 clf_export_path = modeldir + 'clf_model/'
@@ -324,7 +324,7 @@ for i in range(6):
     temp = {}
     temp['class'] = 'scalar'
     temp['name'] = metric_names[i]
-    temp['value'] = train_metrics[i]
+    temp['value'] = str(train_metrics[i])
     metrics.append(temp)
 metrics = {'metrics':metrics}
 print('metrics', metrics)
