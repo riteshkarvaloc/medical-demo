@@ -5,7 +5,7 @@ import numpy as np
 import sys
 import pickle
 from optparse import OptionParser
-import time
+import time, json
 import tensorflow as tf
 from keras_frcnn import config
 from tensorflow.keras import backend as K
@@ -57,13 +57,12 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 
 sys.setrecursionlimit(40000)
 
-test_path = 'data/test.png'
+
 num_rois = 32
 parser = "simple"
 network = 'resnet50'
 config_filename = "config.pickle"
-model_path = '/home/ritesh/Dkube-Demos/model/'
-export_path = '/home/ritesh/results_img'
+
 
 def load(model_path):
     config_output_filename = model_path + 'config.pickle'
@@ -78,14 +77,11 @@ def load(model_path):
     C.use_horizontal_flips = False
     C.use_vertical_flips = False
     C.rot_90 = False
-
-    img_path = test_path
     class_mapping = C.class_mapping
     if 'bg' not in class_mapping:
         class_mapping['bg'] = len(class_mapping)
 
     class_mapping = {v: k for k, v in class_mapping.items()}
-    class_to_color = {class_mapping[v]: np.random.randint(0, 255, 3) for v in class_mapping}
     C.num_rois = int(num_rois)
     if C.network == 'resnet50':
         num_features = 1024
@@ -111,17 +107,18 @@ def load(model_path):
     return [model_rpn, model_classifier, C], True
 
 
-def predict(model): #, request: Dict) -> Dict:
-    # classes = {}
+def predict(model, request: dict) -> dict:
     model_rpn, model_classifier, C = model[0], model[1], model[2]
-    # class_mapping = C.class_mapping
     class_mapping = {v: k for k, v in C.class_mapping.items()}
     class_to_color = {class_mapping[v]: np.random.randint(0, 255, 3) for v in class_mapping}
     if not tf.io.gfile.exists(export_path):
         tf.io.gfile.makedirs(export_path)
     bbox_threshold = 0.5
-    filepath = test_path
-    img = cv2.imread(filepath)
+    # filepath = test_path
+    # img = cv2.imread(filepath)
+    instances = request["instances"]
+    img = np.array(instances, dtype=np.uint8)
+    print(img.shape)
     X, ratio = format_img(img, C)
     X = np.transpose(X, (0, 2, 3, 1))
     [Y1, Y2, F] = model_rpn.predict(X)
@@ -185,8 +182,24 @@ def predict(model): #, request: Dict) -> Dict:
             cv2.rectangle(img, (textOrg[0] - 5, textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (0, 0, 0), 2)
             cv2.rectangle(img, (textOrg[0] - 5,textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (255, 255, 255), -1)
             cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
-    cv2.imwrite(export_path + '/{}.png'.format(1),img)
+    payload = {
+                'output': img.tolist(),
+    }
+    return payload
 
+# model_path = '/home/ritesh/Dkube-Demos/model/'
+# export_path = './'
+# test_path = 'data/test.png'
 
-model, st = load(model_path)
-predict(model)
+# filepath = test_path
+# img = cv2.imread(filepath)
+# print(img.shape)
+# request = {
+#     'instances': img.tolist(),
+# }
+# model, st = load(model_path)
+# out = predict(model, request)
+# out = np.array(out['output'], dtype= np.uint8)
+# cv2.imwrite(export_path + 'result.png',out)
+# with open('request.json', 'w') as outfile:
+#     json.dump(request, outfile, indent=4)
