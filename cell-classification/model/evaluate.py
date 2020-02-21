@@ -80,10 +80,10 @@ parser.add_option("--network", dest="network", help="Base network to use. Suppor
 if not options.test_path:   # if filename is not given
     parser.error('Error: path to test data must be specified. Pass --path to command line')
 
-
-data_path = '/opt/dkube/input/'
-
-model_path ='/opt/dkube/model/model/'
+if os.getenv('DKUBE_JOB_CLASS', None) == 'notebook':
+    model_path ='/home/dkube/work/workspace/model/'
+else:
+    model_path ='/opt/dkube/model/model/'
 
 config_output_filename = model_path + options.config_filename
 

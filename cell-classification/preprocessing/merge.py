@@ -5,12 +5,18 @@ import pandas as pd
 import os, shutil
 import cv2
 import numpy as np
+import os
 
-
-DATA_PATH = '/opt/dkube/input/'
-OUT_PATH = '/opt/dkube/output/'
-IN_IMG_PATH = DATA_PATH + 'HPIA/Nucleoplasm_Cytosol_train/'
-OUT_IMG_PATH = OUT_PATH + 'HPIA/Nucleoplasm_Cytosol/'
+if os.getenv('DKUBE_JOB_CLASS', None) == 'notebook':
+    DATA_PATH = '/opt/dkube/input/'
+    OUT_PATH = '/home/dkube/work/workspace/'
+    IN_IMG_PATH = DATA_PATH + 'HPIA/Nucleoplasm_Cytosol_train/'
+    OUT_IMG_PATH = OUT_PATH + 'Nucleoplasm_Cytosol/'
+else:
+    DATA_PATH = '/opt/dkube/input/'
+    OUT_PATH = '/opt/dkube/output/'
+    IN_IMG_PATH = DATA_PATH + 'HPIA/Nucleoplasm_Cytosol_train/'
+    OUT_IMG_PATH = OUT_PATH + 'HPIA/Nucleoplasm_Cytosol/'
 
 annot = pd.read_csv(DATA_PATH + 'HPIA/train.csv')
 

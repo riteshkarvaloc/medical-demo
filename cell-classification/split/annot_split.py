@@ -132,11 +132,18 @@ if __name__== "__main__":
                              " helps in regenerating the split",)
     parser.add_argument("-o","--outputdir", default='/opt/dkube/output/', dest = 'outdir', help="output folder path")
     args = parser.parse_args()
+    
+    if os.getenv('DKUBE_JOB_CLASS', None) == 'notebook':
+        DATA_DIR = "/home/dkube/work/workspace/"
+        OUT_DIR = '/home/dkube/work/workspace/split/'
+        TRAIN_DATA = OUT_DIR + 'train/'
+        TEST_DATA = OUT_DIR + 'test/'
+    else:
+        DATA_DIR = "/opt/dkube/input/"
+        OUT_DIR = args.outdir
+        TRAIN_DATA = OUT_DIR + 'train/'
+        TEST_DATA = OUT_DIR + 'test/'
 
-    DATA_DIR = "/opt/dkube/input/"
-    OUT_DIR = args.outdir
-    TRAIN_DATA = OUT_DIR + 'train/'
-    TEST_DATA = OUT_DIR + 'test/'
     annot = pd.read_csv(DATA_DIR + 'HPIA/train.csv')
     imgfolder = DATA_DIR + 'HPIA/Nucleoplasm_Cytosol/'
     img_names = os.listdir(imgfolder)
