@@ -1,3 +1,6 @@
+# If running in notebook
+cd work/workspace
+
 # Preprocessing command
 python cell-classification/preprocessing/merge.py
 
