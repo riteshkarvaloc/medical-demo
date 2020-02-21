@@ -41,11 +41,11 @@ def d3pipeline(
     #For custom private images, please input username/password
     training_container=json.dumps({'image':'docker.io/ocdr/d3-datascience-tf-cpu:v1.14', 'username':'', 'password': ''}),
     #Name of the workspace in dkube. Update accordingly if different name is used while creating a workspace in dkube.
-    training_program="faster-rcnn",
+    training_program="cellular",
     #Script to run inside the training container    
     training_script="python cell-classification/model/train_frcnn.py -o simple -p /opt/dkube/input/annot.txt --hf --vf --rot --num_epochs 1",
     #Input datasets for training. Update accordingly if different name is used while creating dataset in dkube.    
-    training_datasets=json.dumps(["callular-train"]),
+    training_datasets=json.dumps(["cellular-train"]),
     training_input_dataset_mounts=json.dumps(["/opt/dkube/input/"]),
     training_outputs=json.dumps(["faster-rcnn"]),
     training_output_mounts=json.dumps(["/opt/dkube/output"]),
