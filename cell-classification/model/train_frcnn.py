@@ -52,8 +52,8 @@ parser.add_option("--input_weight_path", dest="input_weight_path", help="Input p
 
 
 if os.getenv('DKUBE_JOB_CLASS', None) == 'notebook':
-    modeldir = '/home/dkube/work/workspace/model/'
-    metric_path = '/home/dkube/work/workspace/metrics/'
+    modeldir = '/home/dkube/model/'
+    metric_path = '/home/dkube/metrics/'
 else:
     modeldir = '/opt/dkube/output/model/'
     metric_path = '/opt/dkube/output/metrics/'

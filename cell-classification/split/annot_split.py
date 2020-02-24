@@ -134,8 +134,8 @@ if __name__== "__main__":
     args = parser.parse_args()
     
     if os.getenv('DKUBE_JOB_CLASS', None) == 'notebook':
-        DATA_DIR = "/home/dkube/work/workspace/"
-        OUT_DIR = '/home/dkube/work/workspace/split/'
+        DATA_DIR = "/home/dkube/"
+        OUT_DIR = '/home/dkube/split/'
         TRAIN_DATA = OUT_DIR + 'train/'
         TEST_DATA = OUT_DIR + 'test/'
     else:
