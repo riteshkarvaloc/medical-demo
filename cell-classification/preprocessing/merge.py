@@ -41,3 +41,5 @@ for each_id in ids:
         print('Finished Merging ' + str(j) + ' images')
 
 shutil.copyfile(DATA_PATH + 'HPIA/train.csv', OUT_PATH + 'HPIA/train.csv')
+
+print("Demo")
