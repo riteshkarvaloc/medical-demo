@@ -1,0 +1,12 @@
+host: 35.222.155.99
+user: oc
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkIjoxNTc5Nzg4Mjc1LCJyb2xlIjoib3BlcmF0b3IiLCJ1c2VybmFtZSI6Im9jIn0.wjoLFNChwBU0gxYIeSCAl-p3Znll1jiNSHSVK2Y93ak
+jobname: auto
+workspace: regression-model-code
+script: python train_nn.py --epochs 5
+datasets:
+  - name: cellular-train
+    mountpath: /opt/dkube/inputs/train/clinical
+models:
+  - faster-rcnn
+template: regression-training
