@@ -13,3 +13,5 @@ python cell-classification/model/train_frcnn.py -o simple -p /opt/dkube/input/an
 
 # Evaluation command
 python cell-classification/model/evaluate.py --path /opt/dkube/input/annot.txt
+
+# Finish
