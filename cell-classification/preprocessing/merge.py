@@ -42,4 +42,4 @@ for each_id in ids:
 
 shutil.copyfile(DATA_PATH + 'HPIA/train.csv', OUT_PATH + 'HPIA/train.csv')
 
-print("Demo")
+print("Demo1")
